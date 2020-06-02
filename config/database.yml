@@ -1,0 +1,22 @@
+default: &default
+  adapter: postgresql
+  pool: 5
+  timeout: 5000
+  host: localhost
+  password: 12#Crossfire
+
+
+development:
+  <<: *default
+  encoding: unicode
+  database: Development
+  username: postgres
+
+test:
+  <<: *default
+  encoding: unicode
+  database: Test
+  username: postgres
+
+production:
+  <<: *default

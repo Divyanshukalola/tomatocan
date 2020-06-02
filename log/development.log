@@ -1,0 +1,869 @@
+  [1m[35m (549.9ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" character varying NOT NULL PRIMARY KEY)[0m
+  [1m[35m (106.4ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" character varying NOT NULL PRIMARY KEY, "value" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[35m (1.2ms)[0m  [1m[34mSELECT pg_try_advisory_lock(2421647872707567945)[0m
+  [1m[35m (1.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to CreateUsers (20130319002105)
+  [1m[35m (1.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (160.3ms)[0m  [1m[35mCREATE TABLE "users" ("id" serial NOT NULL PRIMARY KEY, "name" character varying, "email" character varying, "ustreamvid" text, "ustreamsocial" character varying, "twitter" character varying, "facebook" character varying, "pinterest" character varying, "youtube" character varying, "genre1" character varying, "genre2" character varying, "genre3" character varying, "blogurl" character varying, "profilepicurl" character varying, "profilepic" character varying, "author" integer, "about" text, "password_digest" character varying, "remember_token" character varying, "created_at" timestamp, "updated_at" timestamp)[0m
+  [1m[35m (67.4ms)[0m  [1m[35mCREATE  INDEX  "index_users_on_remember_token" ON "users"  ("remember_token")[0m
+  [1m[36mprimary::SchemaMigration Create (38.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20130319002105"]]
+  [1m[35m (2.4ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateBooks (20130319005531)
+  [1m[35m (4.0ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (123.3ms)[0m  [1m[35mCREATE TABLE "books" ("id" serial NOT NULL PRIMARY KEY, "title" character varying, "blurb" text, "releasedate" date, "author_id" integer, "genre" character varying, "fiftychar" character varying, "price" float, "bookpdf" character varying, "coverpic" character varying, "coverpicurl" character varying, "created_at" timestamp, "updated_at" timestamp)[0m
+  [1m[36mprimary::SchemaMigration Create (0.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20130319005531"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddUserIdToBooks (20130329015056)
+  [1m[35m (0.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.6ms)[0m  [1m[35mALTER TABLE "books" ADD "user_id" integer[0m
+  [1m[36mprimary::SchemaMigration Create (0.7ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20130329015056"]]
+  [1m[35m (1.1ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddDeviseToUsers (20130703205730)
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (8.6ms)[0m  [1m[35mALTER TABLE "users" ADD "encrypted_password" character varying DEFAULT '' NOT NULL[0m
+  [1m[35m (0.6ms)[0m  [1m[35mALTER TABLE "users" ADD "reset_password_token" character varying[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "users" ADD "reset_password_sent_at" timestamp[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "users" ADD "remember_created_at" timestamp[0m
+  [1m[35m (0.6ms)[0m  [1m[35mALTER TABLE "users" ADD "sign_in_count" integer DEFAULT 0[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "users" ADD "current_sign_in_at" timestamp[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "users" ADD "last_sign_in_at" timestamp[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "users" ADD "current_sign_in_ip" character varying[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "users" ADD "last_sign_in_ip" character varying[0m
+  [1m[35m (39.2ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_users_on_email" ON "users"  ("email")[0m
+  [1m[35m (37.4ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_users_on_reset_password_token" ON "users"  ("reset_password_token")[0m
+  [1m[36mprimary::SchemaMigration Create (0.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20130703205730"]]
+  [1m[35m (0.9ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateReviews (20130827153556)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (104.4ms)[0m  [1m[35mCREATE TABLE "reviews" ("id" serial NOT NULL PRIMARY KEY, "blurb" text, "user_id" integer, "book_id" integer, "star" integer, "created_at" timestamp, "updated_at" timestamp)[0m
+  [1m[36mprimary::SchemaMigration Create (0.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20130827153556"]]
+  [1m[35m (1.0ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateRsvpqs (20130901123456)
+  [1m[35m (0.6ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (43.4ms)[0m  [1m[35mCREATE TABLE "rsvpqs" ("id" serial NOT NULL PRIMARY KEY, "event_id" integer, "user_id" integer, "guests" integer, "created_at" timestamp, "updated_at" timestamp)[0m
+  [1m[36mprimary::SchemaMigration Create (0.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20130901123456"]]
+  [1m[35m (0.9ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddBookfilesToUsers (20130911002912)
+  [1m[35m (0.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "users" ADD "bookmobi" character varying[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "users" ADD "bookepub" character varying[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "users" ADD "bookkobo" character varying[0m
+  [1m[36mprimary::SchemaMigration Create (0.9ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20130911002912"]]
+  [1m[35m (1.1ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddBookfilesToBooks (20130911045635)
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "books" ADD "bookmobi" character varying[0m
+  [1m[35m (2.8ms)[0m  [1m[35mALTER TABLE "books" ADD "bookepub" character varying[0m
+  [1m[35m (40.2ms)[0m  [1m[35mALTER TABLE "books" ADD "bookkobo" character varying[0m
+  [1m[36mprimary::SchemaMigration Create (0.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20130911045635"]]
+  [1m[35m (0.9ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddPermalinkToUsers (20130919999999)
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "users" ADD "permalink" character varying[0m
+  [1m[35m (41.5ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_users_on_permalink" ON "users"  ("permalink")[0m
+  [1m[36mprimary::SchemaMigration Create (0.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20130919999999"]]
+  [1m[35m (0.9ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreatePurchases (20131107224808)
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (72.3ms)[0m  [1m[35mCREATE TABLE "purchases" ("id" serial NOT NULL PRIMARY KEY, "author_id" integer, "book_id" integer, "stripe_customer_token" character varying, "plan_id" integer, "created_at" timestamp, "updated_at" timestamp)[0m
+  [1m[36mprimary::SchemaMigration Create (0.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20131107224808"]]
+  [1m[35m (1.0ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddStripecardtokenuseridToPurchases (20131108144824)
+  [1m[35m (0.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "purchases" ADD "stripe_card_token" character varying[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "purchases" ADD "user_id" integer[0m
+  [1m[36mprimary::SchemaMigration Create (0.9ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20131108144824"]]
+  [1m[35m (0.9ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddBookfiletypeToPurchases (20131212171634)
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "purchases" ADD "bookfiletype" character varying[0m
+  [1m[36mprimary::SchemaMigration Create (0.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20131212171634"]]
+  [1m[35m (1.0ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateEvents (20140702183036)
+  [1m[35m (0.7ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (79.7ms)[0m  [1m[35mCREATE TABLE "events" ("id" serial NOT NULL PRIMARY KEY, "name" character varying, "start_at" timestamp, "end_at" timestamp, "created_at" timestamp, "updated_at" timestamp)[0m
+  [1m[36mprimary::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20140702183036"]]
+  [1m[35m (296.8ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddFieldsToEvents (20140704202623)
+  [1m[35m (0.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "events" ADD "desc" text[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "events" ADD "address" character varying[0m
+  [1m[35m (0.7ms)[0m  [1m[35mALTER TABLE "events" ADD "rsvp" character varying[0m
+  [1m[35m (0.7ms)[0m  [1m[35mALTER TABLE "events" ADD "user_id" integer[0m
+  [1m[36mprimary::SchemaMigration Create (0.7ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20140704202623"]]
+  [1m[35m (28.6ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddLatLngToEvents (20140707151104)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "events" ADD "latitude" float[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "events" ADD "longitude" float[0m
+  [1m[36mprimary::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20140707151104"]]
+  [1m[35m (75.8ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateGroups (20140708193144)
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (131.7ms)[0m  [1m[35mCREATE TABLE "groups" ("id" serial NOT NULL PRIMARY KEY, "name" character varying, "address" character varying, "latitude" float, "longitude" float, "user_id" integer, "about" text, "grouppic" character varying, "type" integer, "created_at" timestamp, "updated_at" timestamp)[0m
+  [1m[36mprimary::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20140708193144"]]
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddGeoToUsers (20140709011126)
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "users" ADD "address" character varying[0m
+  [1m[35m (0.3ms)[0m  [1m[35mALTER TABLE "users" ADD "latitude" float[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "users" ADD "longitude" float[0m
+  [1m[36mprimary::SchemaMigration Create (1.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20140709011126"]]
+  [1m[35m (0.9ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddAudioToBooks (20140709114307)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "books" ADD "bookaudio" character varying[0m
+  [1m[36mprimary::SchemaMigration Create (0.7ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20140709114307"]]
+  [1m[35m (1.1ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddGrouptypeToGroup (20140709193756)
+  [1m[35m (0.7ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.9ms)[0m  [1m[35mALTER TABLE "groups" ADD "grouptype" integer[0m
+  [1m[36mprimary::SchemaMigration Create (0.7ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20140709193756"]]
+  [1m[35m (1.1ms)[0m  [1m[35mCOMMIT[0m
+Migrating to RemoveTypeFromGroups (20140917005426)
+  [1m[35m (0.6ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (17.2ms)[0m  [1m[35mALTER TABLE "groups" DROP COLUMN "type"[0m
+  [1m[36mprimary::SchemaMigration Create (0.7ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20140917005426"]]
+  [1m[35m (1.4ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddPermalinkToGroups (20141014161635)
+  [1m[35m (0.7ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.6ms)[0m  [1m[35mALTER TABLE "groups" ADD "permalink" character varying[0m
+  [1m[36mprimary::SchemaMigration Create (0.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20141014161635"]]
+  [1m[35m (1.0ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateFriendlyIdSlugs (20141015171700)
+  [1m[35m (0.6ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (90.2ms)[0m  [1m[35mCREATE TABLE "friendly_id_slugs" ("id" serial NOT NULL PRIMARY KEY, "slug" character varying NOT NULL, "sluggable_id" integer NOT NULL, "sluggable_type" character varying(50), "scope" character varying, "created_at" timestamp)[0m
+  [1m[35m (36.6ms)[0m  [1m[35mCREATE  INDEX  "index_friendly_id_slugs_on_sluggable_id" ON "friendly_id_slugs"  ("sluggable_id")[0m
+  [1m[35m (35.2ms)[0m  [1m[35mCREATE  INDEX  "index_friendly_id_slugs_on_slug_and_sluggable_type" ON "friendly_id_slugs"  ("slug", "sluggable_type")[0m
+  [1m[35m (36.3ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope" ON "friendly_id_slugs"  ("slug", "sluggable_type", "scope")[0m
+  [1m[35m (35.4ms)[0m  [1m[35mCREATE  INDEX  "index_friendly_id_slugs_on_sluggable_type" ON "friendly_id_slugs"  ("sluggable_type")[0m
+  [1m[36mprimary::SchemaMigration Create (0.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20141015171700"]]
+  [1m[35m (1.0ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddSlugToGroups (20141015172122)
+  [1m[35m (0.8ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.3ms)[0m  [1m[35mALTER TABLE "groups" ADD "slug" character varying[0m
+  [1m[35m (36.1ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_groups_on_slug" ON "groups"  ("slug")[0m
+  [1m[36mprimary::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20141015172122"]]
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddSlugToUsers (20141015182053)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "users" ADD "slug" character varying[0m
+  [1m[35m (30.8ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_users_on_slug" ON "users"  ("slug")[0m
+  [1m[36mprimary::SchemaMigration Create (0.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20141015182053"]]
+  [1m[35m (0.9ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddGroupidsToEvents (20141018013323)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "events" ADD "group1id" integer[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "events" ADD "group2id" integer[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "events" ADD "group3id" integer[0m
+  [1m[36mprimary::SchemaMigration Create (0.9ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20141018013323"]]
+  [1m[35m (0.9ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddNewsfeedsToGroups (20141020175546)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "groups" ADD "newsurl" character varying[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "groups" ADD "twitter" character varying[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "groups" ADD "facebook" character varying[0m
+  [1m[36mprimary::SchemaMigration Create (0.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20141020175546"]]
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+Migrating to ChangeUstreamsocialFormatInUsers (20150102232527)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.7ms)[0m  [1m[35mALTER TABLE "users" ALTER COLUMN "ustreamsocial" TYPE text[0m
+  [1m[36mprimary::SchemaMigration Create (0.7ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20150102232527"]]
+  [1m[35m (1.1ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddYoutubeToUsers (20150113175405)
+  [1m[35m (0.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.3ms)[0m  [1m[35mALTER TABLE "users" ADD "youtube1" text[0m
+  [1m[35m (1.8ms)[0m  [1m[35mALTER TABLE "users" ADD "youtube2" text[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "users" ADD "youtube3" text[0m
+  [1m[36mprimary::SchemaMigration Create (0.8ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20150113175405"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddYoutubeToBooks (20150114174148)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "books" ADD "youtube1" text[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "books" ADD "youtube2" text[0m
+  [1m[36mprimary::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20150114174148"]]
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+Migrating to RemoveRsvpFromEvent (20150203031310)
+  [1m[35m (0.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.8ms)[0m  [1m[35mALTER TABLE "events" DROP COLUMN "rsvp"[0m
+  [1m[36mprimary::SchemaMigration Create (1.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20150203031310"]]
+  [1m[35m (1.4ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddUsridToEvents (20150203045443)
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.6ms)[0m  [1m[35mALTER TABLE "events" ADD "usrid" integer[0m
+  [1m[36mprimary::SchemaMigration Create (0.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20150203045443"]]
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddYouTubeDescToUsers (20150212204024)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.9ms)[0m  [1m[35mALTER TABLE "users" ADD "videodesc1" character varying[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "users" ADD "videodesc2" character varying[0m
+  [1m[35m (0.9ms)[0m  [1m[35mALTER TABLE "users" ADD "videodesc3" character varying[0m
+  [1m[36mprimary::SchemaMigration Create (0.8ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20150212204024"]]
+  [1m[35m (1.5ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddYouTubeDescToBooks (20150212204130)
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.2ms)[0m  [1m[35mALTER TABLE "books" ADD "videodesc1" character varying[0m
+  [1m[35m (0.9ms)[0m  [1m[35mALTER TABLE "books" ADD "videodesc2" character varying[0m
+  [1m[35m (0.9ms)[0m  [1m[35mALTER TABLE "books" ADD "videodesc3" character varying[0m
+  [1m[36mprimary::SchemaMigration Create (2.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20150212204130"]]
+  [1m[35m (1.1ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddVideoDescToBooks (20150213060706)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "books" ADD "bkvideodesc1" character varying[0m
+  [1m[35m (0.6ms)[0m  [1m[35mALTER TABLE "books" ADD "bkvideodesc2" character varying[0m
+  [1m[36mprimary::SchemaMigration Create (0.9ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20150213060706"]]
+  [1m[35m (1.1ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddBlogradioToUsers (20150519233027)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.6ms)[0m  [1m[35mALTER TABLE "users" ADD "blogradio" character varying[0m
+  [1m[36mprimary::SchemaMigration Create (0.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20150519233027"]]
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddBlogtalkradioToUsers (20150519235541)
+  [1m[35m (1.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (2.3ms)[0m  [1m[35mALTER TABLE "users" ADD "blogtalkradio" text[0m
+  [1m[36mprimary::SchemaMigration Create (0.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20150519235541"]]
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddPriceToPurchases (20150626191919)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.6ms)[0m  [1m[35mALTER TABLE "purchases" ADD "pricesold" float[0m
+  [1m[36mprimary::SchemaMigration Create (0.8ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20150626191919"]]
+  [1m[35m (2.0ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddStripeidToUser (20150810182454)
+  [1m[35m (0.6ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.1ms)[0m  [1m[35mALTER TABLE "users" ADD "stripeid" character varying[0m
+  [1m[36mprimary::SchemaMigration Create (0.8ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20150810182454"]]
+  [1m[35m (1.1ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddTokenToUsers (20150831182745)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "users" ADD "stripe_customer_token" character varying[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "users" ADD "stripe" character varying[0m
+  [1m[36mprimary::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20150831182745"]]
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddAuthorcutToPurchases (20160331182727)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (19.3ms)[0m  [1m[35mALTER TABLE "purchases" ADD "authorcut" decimal(8,2)[0m
+  [1m[36mprimary::SchemaMigration Create (0.9ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20160331182727"]]
+  [1m[35m (1.0ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddPaidToPurchases (20160331212341)
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "purchases" ADD "paid" date[0m
+  [1m[36mprimary::SchemaMigration Create (1.7ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20160331212341"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+Migrating to RemoveStripeFromUsers (20160401172417)
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.3ms)[0m  [1m[35mALTER TABLE "users" DROP COLUMN "stripe"[0m
+  [1m[36mprimary::SchemaMigration Create (0.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20160401172417"]]
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddStripesignupToUsers (20160413201924)
+  [1m[35m (0.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.6ms)[0m  [1m[35mALTER TABLE "users" ADD "stripesignup" timestamp[0m
+  [1m[36mprimary::SchemaMigration Create (1.6ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20160413201924"]]
+  [1m[35m (1.6ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateProjects (20160722183453)
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (94.4ms)[0m  [1m[35mCREATE TABLE "projects" ("id" serial NOT NULL PRIMARY KEY, "name" character varying, "user_id" integer, "mission" text, "projectpic" character varying, "created_at" timestamp, "updated_at" timestamp)[0m
+  [1m[36mprimary::SchemaMigration Create (0.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20160722183453"]]
+  [1m[35m (0.9ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateMerchandises (20160722183540)
+  [1m[35m (0.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (72.3ms)[0m  [1m[35mCREATE TABLE "merchandises" ("id" serial NOT NULL PRIMARY KEY, "name" character varying, "user_id" integer, "price" float, "desc" text, "itempic" character varying, "created_at" timestamp, "updated_at" timestamp)[0m
+  [1m[36mprimary::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20160722183540"]]
+  [1m[35m (1.0ms)[0m  [1m[35mCOMMIT[0m
+Migrating to RemoveVideodescFromBooks (20160722191950)
+  [1m[35m (0.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.9ms)[0m  [1m[35mALTER TABLE "books" DROP COLUMN "videodesc1"[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "books" DROP COLUMN "videodesc2"[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "books" DROP COLUMN "videodesc3"[0m
+  [1m[36mprimary::SchemaMigration Create (0.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20160722191950"]]
+  [1m[35m (1.1ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddPermalinkToProjects (20160722202310)
+  [1m[35m (0.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.8ms)[0m  [1m[35mALTER TABLE "projects" ADD "permalink" character varying[0m
+  [1m[36mprimary::SchemaMigration Create (1.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20160722202310"]]
+  [1m[35m (1.0ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddSlugToProjects (20160722204330)
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "projects" ADD "slug" character varying[0m
+  [1m[35m (60.7ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_projects_on_slug" ON "projects"  ("slug")[0m
+  [1m[36mprimary::SchemaMigration Create (0.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20160722204330"]]
+  [1m[35m (0.9ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddProjToMerchandises (20160726003315)
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "merchandises" ADD "project_id" integer[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "merchandises" ADD "deadline" timestamp[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "merchandises" ADD "goal" float[0m
+  [1m[36mprimary::SchemaMigration Create (0.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20160726003315"]]
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddMerchIdToPurchases (20160726202300)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "purchases" ADD "merchandise_id" integer[0m
+  [1m[36mprimary::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20160726202300"]]
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateAgreements (20160727182101)
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (39.9ms)[0m  [1m[35mCREATE TABLE "agreements" ("id" serial NOT NULL PRIMARY KEY, "project_id" integer, "group_id" integer, "created_at" timestamp, "updated_at" timestamp)[0m
+  [1m[36mprimary::SchemaMigration Create (0.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20160727182101"]]
+  [1m[35m (0.9ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddDeadlineToProjects (20160728003236)
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "projects" ADD "deadline" timestamp[0m
+  [1m[36mprimary::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20160728003236"]]
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddCallactionToGroups (20160729234618)
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.8ms)[0m  [1m[35mALTER TABLE "groups" ADD "callaction" text[0m
+  [1m[36mprimary::SchemaMigration Create (0.6ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20160729234618"]]
+  [1m[35m (1.0ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddGroupToPurchases (20170727040423)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "purchases" ADD "group_id" integer[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "purchases" ADD "groupcut" decimal(8,2)[0m
+  [1m[36mprimary::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20170727040423"]]
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddShippingToPurchases (20170807221504)
+  [1m[35m (0.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.8ms)[0m  [1m[35mALTER TABLE "purchases" ADD "shipaddress" character varying[0m
+  [1m[35m (1.1ms)[0m  [1m[35mALTER TABLE "purchases" ADD "fulfillstatus" character varying[0m
+  [1m[36mprimary::SchemaMigration Create (0.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20170807221504"]]
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddStripeToGroups (20170808041311)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "groups" ADD "stripeid" character varying[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "groups" ADD "stripe_customer_token" character varying[0m
+  [1m[35m (0.8ms)[0m  [1m[35mALTER TABLE "groups" ADD "stripesignup" timestamp[0m
+  [1m[36mprimary::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20170808041311"]]
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddApprovedToAgreements (20170824041311)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "agreements" ADD "approved" timestamp[0m
+  [1m[36mprimary::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20170824041311"]]
+  [1m[35m (1.0ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddYoutubeToMerchandises (20171003004455)
+  [1m[35m (0.6ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.2ms)[0m  [1m[35mALTER TABLE "merchandises" ADD "youtube" character varying[0m
+  [1m[36mprimary::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20171003004455"]]
+  [1m[35m (0.9ms)[0m  [1m[35mCOMMIT[0m
+Migrating to ChangeGroupTypeToString (20171003004459)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (165.7ms)[0m  [1m[35mALTER TABLE "groups" ALTER COLUMN "grouptype" TYPE character varying[0m
+  [1m[36mprimary::SchemaMigration Create (0.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20171003004459"]]
+  [1m[35m (5.7ms)[0m  [1m[35mCOMMIT[0m
+Migrating to ChangeUserTypeToString (20171003004499)
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (253.2ms)[0m  [1m[35mALTER TABLE "users" ALTER COLUMN "author" TYPE character varying[0m
+  [1m[36mprimary::SchemaMigration Create (0.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20171003004499"]]
+  [1m[35m (5.5ms)[0m  [1m[35mCOMMIT[0m
+Migrating to RenameProjectsToPhases (20171003004999)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "projects" RENAME TO "phases"[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER INDEX "projects_pkey" RENAME TO "phases_pkey"[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "public"."projects_id_seq" RENAME TO "phases_id_seq"[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER INDEX "index_projects_on_slug" RENAME TO "index_phases_on_slug"[0m
+  [1m[36mprimary::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20171003004999"]]
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+Migrating to ChangeAgreementProjidToPhaseid (20171003005999)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "agreements" RENAME COLUMN "project_id" TO "phase_id"[0m
+  [1m[35m (1.0ms)[0m  [1m[35mALTER TABLE "merchandises" RENAME COLUMN "project_id" TO "phase_id"[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "phases" RENAME COLUMN "projectpic" TO "phasepic"[0m
+  [1m[36mprimary::SchemaMigration Create (0.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20171003005999"]]
+  [1m[35m (1.0ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddBannerpicToUsers (20171207201913)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.5ms)[0m  [1m[35mALTER TABLE "users" ADD "bannerpic" character varying[0m
+  [1m[36mprimary::SchemaMigration Create (1.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20171207201913"]]
+  [1m[35m (1.5ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateMovies (20180207055147)
+  [1m[35m (0.7ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (78.2ms)[0m  [1m[35mCREATE TABLE "movies" ("id" bigserial primary key, "title" character varying, "about" text, "youtube1" character varying, "youtube2" character varying, "youtube3" character varying, "videodesc1" character varying, "videodesc2" character varying, "videodesc3" character varying, "moviepic" character varying, "genre" character varying, "price" float, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[36mprimary::SchemaMigration Create (0.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20180207055147"]]
+  [1m[35m (1.0ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddUserIdToMovie (20180207060729)
+  [1m[35m (0.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "movies" ADD "user_id" integer[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "movies" ADD "director" character varying[0m
+  [1m[36mprimary::SchemaMigration Create (0.6ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20180207060729"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddReleasedateToMovies (20180207212824)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "movies" ADD "releasedate" date[0m
+  [1m[36mprimary::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20180207212824"]]
+  [1m[35m (0.9ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateMovieroles (20180207235505)
+  [1m[35m (0.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (79.2ms)[0m  [1m[35mCREATE TABLE "movieroles" ("id" bigserial primary key, "role" character varying, "roledesc" character varying, "user_id" integer, "movie_id" integer, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[36mprimary::SchemaMigration Create (0.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20180207235505"]]
+  [1m[35m (1.0ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateRelationships (20180611172922)
+  [1m[35m (0.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (44.4ms)[0m  [1m[35mCREATE TABLE "relationships" ("id" bigserial primary key, "follower_id" integer, "followed_id" integer, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35m (35.2ms)[0m  [1m[35mCREATE  INDEX  "index_relationships_on_follower_id" ON "relationships"  ("follower_id")[0m
+  [1m[35m (36.4ms)[0m  [1m[35mCREATE  INDEX  "index_relationships_on_followed_id" ON "relationships"  ("followed_id")[0m
+  [1m[35m (35.7ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_relationships_on_follower_id_and_followed_id" ON "relationships"  ("follower_id", "followed_id")[0m
+  [1m[36mprimary::SchemaMigration Create (0.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20180611172922"]]
+  [1m[35m (1.0ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddImportanceOfCharacterToPhases (20180704045638)
+  [1m[35m (0.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "phases" ADD "CharacterImportance" character varying[0m
+  [1m[36mprimary::SchemaMigration Create (0.6ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20180704045638"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddWhyClassyToPhases (20180709185134)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "phases" ADD "why_classy" character varying[0m
+  [1m[36mprimary::SchemaMigration Create (0.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20180709185134"]]
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+Migrating to RemoveCharacterImportanceFromPhases (20180709194520)
+  [1m[35m (0.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.6ms)[0m  [1m[35mALTER TABLE "phases" DROP COLUMN "CharacterImportance"[0m
+  [1m[36mprimary::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20180709194520"]]
+  [1m[35m (1.0ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddYoutubeToPhases (20180723191624)
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "phases" ADD "youtube" character varying[0m
+  [1m[36mprimary::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20180723191624"]]
+  [1m[35m (0.9ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddUploadersToMerchandises (20180806192730)
+  [1m[35m (0.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.4ms)[0m  [1m[35mALTER TABLE "merchandises" ADD "podcast" character varying[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "merchandises" ADD "video" character varying[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "merchandises" ADD "graphic" character varying[0m
+  [1m[35m (0.3ms)[0m  [1m[35mALTER TABLE "merchandises" ADD "bookepub" character varying[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "merchandises" ADD "bookmobi" character varying[0m
+  [1m[35m (0.6ms)[0m  [1m[35mALTER TABLE "merchandises" ADD "bookpdf" character varying[0m
+  [1m[36mprimary::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20180806192730"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+Migrating to ChangeColumnPhaseidToUseridFromAgreements (20180823191417)
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "agreements" RENAME COLUMN "phase_id" TO "user_id"[0m
+  [1m[36mprimary::SchemaMigration Create (0.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20180823191417"]]
+  [1m[35m (40.5ms)[0m  [1m[35mCOMMIT[0m
+Migrating to RemovePhaseIdFromMerchandise (20180823212857)
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "merchandises" DROP COLUMN "phase_id"[0m
+  [1m[36mprimary::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20180823212857"]]
+  [1m[35m (1.0ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddExpirationToMerchandises (20180823230813)
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "merchandises" ADD "expiration" timestamp[0m
+  [1m[36mprimary::SchemaMigration Create (0.9ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20180823230813"]]
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddEmailToPurchases (20181029234711)
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.7ms)[0m  [1m[35mALTER TABLE "purchases" ADD "email" character varying[0m
+  [1m[36mprimary::SchemaMigration Create (0.7ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20181029234711"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddEmailToRsvpqs (20181029234726)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (34.8ms)[0m  [1m[35mALTER TABLE "rsvpqs" ADD "email" character varying[0m
+  [1m[36mprimary::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20181029234726"]]
+  [1m[35m (0.9ms)[0m  [1m[35mCOMMIT[0m
+Migrating to ChangeBookpdfToMerchpdf (20181106191725)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "merchandises" RENAME COLUMN "bookpdf" TO "merchpdf"[0m
+  [1m[36mprimary::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20181106191725"]]
+  [1m[35m (1.0ms)[0m  [1m[35mCOMMIT[0m
+Migrating to ChangeBookmobiToMerchmobi (20181106192013)
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "merchandises" RENAME COLUMN "bookmobi" TO "merchmobi"[0m
+  [1m[36mprimary::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20181106192013"]]
+  [1m[35m (1.0ms)[0m  [1m[35mCOMMIT[0m
+Migrating to ChangeBookepubToMerchepub (20181106192048)
+  [1m[35m (0.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.7ms)[0m  [1m[35mALTER TABLE "merchandises" RENAME COLUMN "bookepub" TO "merchepub"[0m
+  [1m[36mprimary::SchemaMigration Create (0.7ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20181106192048"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+Migrating to ChangePodcastToAudio (20181106192145)
+  [1m[35m (0.8ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "merchandises" RENAME COLUMN "podcast" TO "audio"[0m
+  [1m[36mprimary::SchemaMigration Create (0.8ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20181106192145"]]
+  [1m[35m (1.0ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddImageCropToMerchandises (20181114054738)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "merchandises" ADD "itempic_crop_x" integer[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "merchandises" ADD "itempic_crop_y" integer[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "merchandises" ADD "itempic_crop_w" integer[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "merchandises" ADD "itempic_crop_h" integer[0m
+  [1m[36mprimary::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20181114054738"]]
+  [1m[35m (0.9ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddMerchgenreToMerchandises (20181114055226)
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "merchandises" ADD "merchgenre" character varying[0m
+  [1m[36mprimary::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20181114055226"]]
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+Migrating to ChangeMerchgenreToButtontype (20181115211337)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "merchandises" RENAME COLUMN "merchgenre" TO "buttontype"[0m
+  [1m[36mprimary::SchemaMigration Create (0.8ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20181115211337"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+Migrating to DropPhaseTable (20181211195718)
+  [1m[35m (0.6ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (16.6ms)[0m  [1m[35mDROP TABLE "phases"[0m
+  [1m[36mprimary::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20181211195718"]]
+  [1m[35m (3.2ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateTimeslots (20190319192653)
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (51.8ms)[0m  [1m[35mCREATE TABLE "timeslots" ("id" bigserial primary key, "user_id" integer, "start_at" timestamp, "end_at" timestamp, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[36mprimary::SchemaMigration Create (0.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20190319192653"]]
+  [1m[35m (1.0ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddInterviewerToEvents (20190322215205)
+  [1m[35m (0.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "events" ADD "interviewer_id" integer[0m
+  [1m[35m (0.7ms)[0m  [1m[35mALTER TABLE "events" ADD "interviewer_name" character varying[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "events" ADD "interviewer_email" character varying[0m
+  [1m[36mprimary::SchemaMigration Create (0.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20190322215205"]]
+  [1m[35m (0.9ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddGuestsToEvents (20190322215535)
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "events" ADD "guest1_user_id" integer[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "events" ADD "guest1_name" character varying[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "events" ADD "guest1_email" character varying[0m
+  [1m[35m (0.7ms)[0m  [1m[35mALTER TABLE "events" ADD "guest2_user_id" integer[0m
+  [1m[35m (0.7ms)[0m  [1m[35mALTER TABLE "events" ADD "guest2_name" character varying[0m
+  [1m[35m (1.2ms)[0m  [1m[35mALTER TABLE "events" ADD "guest2_email" character varying[0m
+  [1m[36mprimary::SchemaMigration Create (0.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20190322215535"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+Migrating to RenameInterviewerIdToInterviewerUserId (20190322221102)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "events" RENAME COLUMN "interviewer_id" TO "interviewer_user_id"[0m
+  [1m[36mprimary::SchemaMigration Create (0.9ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20190322221102"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddGuestAndInterviewerInformationToTimeslots (20190405190200)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "timeslots" ADD "interviewer_user_id" integer[0m
+  [1m[35m (47.4ms)[0m  [1m[35mALTER TABLE "timeslots" ADD "interviewer_name" character varying[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "timeslots" ADD "interviewer_email" character varying[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "timeslots" ADD "guest1_user_id" integer[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "timeslots" ADD "guest1_name" character varying[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "timeslots" ADD "guest1_email" character varying[0m
+  [1m[36mprimary::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20190405190200"]]
+  [1m[35m (0.9ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddNameToTimeslots (20190416205849)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.1ms)[0m  [1m[35mALTER TABLE "timeslots" ADD "name" character varying[0m
+  [1m[36mprimary::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20190416205849"]]
+  [1m[35m (24.6ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddShowDurationToTimeslots (20190426225611)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "timeslots" ADD "show_duration" integer[0m
+  [1m[36mprimary::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20190426225611"]]
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+Migrating to RemoveItempicCropFromMerchandises (20190809152401)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "merchandises" DROP COLUMN "itempic_crop_x"[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "merchandises" DROP COLUMN "itempic_crop_y"[0m
+  [1m[35m (0.6ms)[0m  [1m[35mALTER TABLE "merchandises" DROP COLUMN "itempic_crop_w"[0m
+  [1m[35m (0.8ms)[0m  [1m[35mALTER TABLE "merchandises" DROP COLUMN "itempic_crop_h"[0m
+  [1m[36mprimary::SchemaMigration Create (1.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20190809152401"]]
+  [1m[35m (1.7ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddAuthenticationTokenToUsers (20200312033441)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "users" ADD "authentication_token" character varying(30)[0m
+  [1m[35m (115.8ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_users_on_authentication_token" ON "users"  ("authentication_token")[0m
+  [1m[36mprimary::SchemaMigration Create (1.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200312033441"]]
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+Migrating to DropMovies (20200408234507)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (16.3ms)[0m  [1m[35mDROP TABLE "movies"[0m
+  [1m[36mprimary::SchemaMigration Create (0.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200408234507"]]
+  [1m[35m (13.7ms)[0m  [1m[35mCOMMIT[0m
+Migrating to DropTimeslots (20200408234528)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (13.5ms)[0m  [1m[35mDROP TABLE "timeslots"[0m
+  [1m[36mprimary::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200408234528"]]
+  [1m[35m (2.8ms)[0m  [1m[35mCOMMIT[0m
+Migrating to DropAgreements (20200408234547)
+  [1m[35m (0.8ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (14.2ms)[0m  [1m[35mDROP TABLE "agreements"[0m
+  [1m[36mprimary::SchemaMigration Create (0.7ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200408234547"]]
+  [1m[35m (20.5ms)[0m  [1m[35mCOMMIT[0m
+Migrating to DropMovieroles (20200408234600)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (15.6ms)[0m  [1m[35mDROP TABLE "movieroles"[0m
+  [1m[36mprimary::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200408234600"]]
+  [1m[35m (2.9ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateMessages (20200427005504)
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (309.4ms)[0m  [1m[35mCREATE TABLE "messages" ("id" bigserial primary key, "fullname" character varying NOT NULL, "email" character varying NOT NULL, "phone_number" character varying, "subject" character varying NOT NULL, "message" text NOT NULL, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[36mprimary::SchemaMigration Create (0.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200427005504"]]
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddOmniauthToUsers (20200427180858)
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "users" ADD "provider" character varying[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "users" ADD "uid" character varying[0m
+  [1m[36mprimary::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200427180858"]]
+  [1m[35m (1.4ms)[0m  [1m[35mCOMMIT[0m
+Migrating to ChangePhoneToBeStringInMessages (20200428013112)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.6ms)[0m  [1m[35mALTER TABLE "messages" ALTER COLUMN "phone_number" TYPE character varying[0m
+  [1m[36mprimary::SchemaMigration Create (0.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200428013112"]]
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+Migrating to RemoveBookfilesFromUsers (201309200000000)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "users" DROP COLUMN "bookmobi"[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "users" DROP COLUMN "bookepub"[0m
+  [1m[35m (0.9ms)[0m  [1m[35mALTER TABLE "users" DROP COLUMN "bookkobo"[0m
+  [1m[36mprimary::SchemaMigration Create (0.7ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "201309200000000"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (1.0ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mActiveRecord::InternalMetadata Create (3.3ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "key"[0m  [["key", "environment"], ["value", "development"], ["created_at", "2020-06-01 21:21:37.998489"], ["updated_at", "2020-06-01 21:21:37.998489"]]
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.6ms)[0m  [1m[34mSELECT pg_advisory_unlock(2421647872707567945)[0m
+  [1m[35m (21.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Started GET "/" for 127.0.0.1 at 2020-06-01 16:22:28 -0500
+  [1m[35m (1.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by StaticPagesController#home as HTML
+  [1m[36mEvent Load (1.2ms)[0m  [1m[34mSELECT "events".* FROM "events" WHERE (start_at < '2020-06-01 14:22:28.780644' AND end_at > '2020-06-01 14:22:28.780644') ORDER BY "events"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mEvent Load (0.8ms)[0m  [1m[34mSELECT "events".* FROM "events" WHERE (start_at > '2020-06-01 14:22:28.780644') ORDER BY start_at ASC LIMIT $1[0m  [["LIMIT", 1]]
+  Rendering static_pages/home.html.erb within layouts/homepg
+  [1m[35m (0.9ms)[0m  [1m[34mSELECT COUNT(*) FROM "events" WHERE (start_at > '2020-06-01 11:22:28.756129')[0m
+  Rendered layouts/_countdown_clock.html.erb (Duration: 541.3ms | Allocations: 472)
+  [1m[35mCACHE  (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "events" WHERE (start_at > '2020-06-01 11:22:28.756129')[0m
+  [1m[35mCACHE  (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "events" WHERE (start_at > '2020-06-01 11:22:28.756129')[0m
+  Rendered layouts/_maincalendar.html.erb (Duration: 359.2ms | Allocations: 3582)
+  Rendered static_pages/home.html.erb within layouts/homepg (Duration: 19550.7ms | Allocations: 3264700)
+  Rendered application/_favicon.html.erb (Duration: 260.6ms | Allocations: 3561)
+  Rendered layouts/_header.html.erb (Duration: 10.0ms | Allocations: 1284)
+  Rendered layouts/_footer.html.erb (Duration: 18.8ms | Allocations: 2090)
+Completed 200 OK in 20463ms (Views: 20314.5ms | ActiveRecord: 18.1ms | Allocations: 3336654)
+
+
+Started GET "/signup" for 127.0.0.1 at 2020-06-01 16:23:08 -0500
+Processing by Devise::RegistrationsController#new as HTML
+  Rendering devise/registrations/new.html.erb within layouts/application
+  Rendered layouts/_flash_messages.html.erb (Duration: 0.7ms | Allocations: 163)
+  Rendered devise/registrations/new.html.erb within layouts/application (Duration: 112.1ms | Allocations: 1739)
+  Rendered application/_favicon.html.erb (Duration: 31.2ms | Allocations: 3462)
+  Rendered layouts/_header.html.erb (Duration: 0.6ms | Allocations: 528)
+  Rendered layouts/_footer.html.erb (Duration: 47.1ms | Allocations: 1697)
+Completed 200 OK in 532ms (Views: 428.9ms | ActiveRecord: 5.6ms | Allocations: 90433)
+
+
+Started POST "/users" for 127.0.0.1 at 2020-06-01 16:23:43 -0500
+Processing by UsersController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"eOePftpbWyo5Lj34Nb2y1i6D5ikDy8LT3lm1+kU7Yyfxnh57L9cCuGdoahsWdPK8cyFCtEoprQ8qUpbMDPZjCQ==", "user"=>{"name"=>"Divyanshu", "email"=>"dkalola@hawk.iit.edu", "permalink"=>"DivyanshuK", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]"}, "commit"=>"Sign Up"}
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (2.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "dkalola@hawk.iit.edu"], ["LIMIT", 1]]
+  [1m[36mUser Exists? (27.0ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER($1) LIMIT $2[0m  [["email", "dkalola@hawk.iit.edu"], ["LIMIT", 1]]
+  [1m[36mUser Exists? (0.6ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE LOWER("users"."permalink") = LOWER($1) LIMIT $2[0m  [["permalink", "DivyanshuK"], ["LIMIT", 1]]
+  [1m[36mUser Create (51.2ms)[0m  [1m[32mINSERT INTO "users" ("name", "email", "author", "created_at", "updated_at", "encrypted_password", "permalink") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"[0m  [["name", "Divyanshu"], ["email", "dkalola@hawk.iit.edu"], ["author", "storyteller"], ["created_at", "2020-06-01 21:23:44.143040"], ["updated_at", "2020-06-01 21:23:44.143040"], ["encrypted_password", "$2a$10$V/sWwvNThMDknme.MHJBbeaR8YTW1ewxChBOvae..m5MNEQmZwjLS"], ["permalink", "divyanshuk"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Update (28.8ms)[0m  [1m[33mUPDATE "users" SET "updated_at" = $1, "sign_in_count" = $2, "current_sign_in_at" = $3, "last_sign_in_at" = $4, "current_sign_in_ip" = $5, "last_sign_in_ip" = $6 WHERE "users"."id" = $7[0m  [["updated_at", "2020-06-01 21:23:44.200553"], ["sign_in_count", 1], ["current_sign_in_at", "2020-06-01 21:23:44.200284"], ["last_sign_in_at", "2020-06-01 21:23:44.200284"], ["current_sign_in_ip", "127.0.0.1"], ["last_sign_in_ip", "127.0.0.1"], ["id", 1]]
+  [1m[35m (0.9ms)[0m  [1m[35mCOMMIT[0m
+Redirected to http://127.0.0.1:3000/divyanshuk/profileinfo
+[ActiveJob] Enqueued ActionMailer::Parameterized::DeliveryJob (Job ID: 168f5936-759a-4a88-9cec-455c30b08003) to Async(mailers) with arguments: "UserMailer", "welcome_email", "deliver_now", {:user=>#<GlobalID:0x00007f35b42d8598 @uri=#<URI::GID gid://crowdpublishtv/User/1>>}
+Completed 302 Found in 1073ms (ActiveRecord: 139.7ms | Allocations: 21192)
+
+
+Started GET "/divyanshuk/profileinfo" for 127.0.0.1 at 2020-06-01 16:23:45 -0500
+  [1m[36mUser Load (0.9ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+[ActiveJob] [ActionMailer::Parameterized::DeliveryJob] [168f5936-759a-4a88-9cec-455c30b08003] Performing ActionMailer::Parameterized::DeliveryJob (Job ID: 168f5936-759a-4a88-9cec-455c30b08003) from Async(mailers) enqueued at 2020-06-01T21:23:45Z with arguments: "UserMailer", "welcome_email", "deliver_now", {:user=>#<GlobalID:0x00007f35b4281c48 @uri=#<URI::GID gid://crowdpublishtv/User/1>>}
+Processing by UsersController#profileinfo as HTML
+  Parameters: {"permalink"=>"divyanshuk"}
+  [1m[36mUser Load (1.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."permalink" = $1 LIMIT $2[0m  [["permalink", "divyanshuk"], ["LIMIT", 1]]
+[ActiveJob] [ActionMailer::Parameterized::DeliveryJob] [168f5936-759a-4a88-9cec-455c30b08003] DEPRECATION WARNING: Sending mail with DeliveryJob and Parameterized::DeliveryJob is deprecated and will be removed in Rails 6.1. Please use MailDeliveryJob instead. (called from instance_exec at /home/divyanshu/.rvm/gems/ruby-2.7.0/gems/activesupport-6.0.3/lib/active_support/callbacks.rb:428)
+[ActiveJob] [ActionMailer::Parameterized::DeliveryJob] [168f5936-759a-4a88-9cec-455c30b08003] UserMailer#welcome_email: processed outbound mail in 114.2ms
+[ActiveJob] [ActionMailer::Parameterized::DeliveryJob] [168f5936-759a-4a88-9cec-455c30b08003] Error performing ActionMailer::Parameterized::DeliveryJob (Job ID: 168f5936-759a-4a88-9cec-455c30b08003) from Async(mailers) in 254.07ms: Errno::ENOENT (No such file or directory @ rb_sysopen - app/assets/images/laptop.png):
+/mnt/c/RUBYONRAILS/tomatocan/app/mailers/user_mailer.rb:28:in `read'
+/mnt/c/RUBYONRAILS/tomatocan/app/mailers/user_mailer.rb:28:in `block in inline_images'
+/mnt/c/RUBYONRAILS/tomatocan/app/mailers/user_mailer.rb:28:in `each'
+/mnt/c/RUBYONRAILS/tomatocan/app/mailers/user_mailer.rb:28:in `inline_images'
+/mnt/c/RUBYONRAILS/tomatocan/app/mailers/user_mailer.rb:10:in `welcome_email'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/actionpack-6.0.3/lib/abstract_controller/base.rb:195:in `process_action'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/actionpack-6.0.3/lib/abstract_controller/callbacks.rb:42:in `block in process_action'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/activesupport-6.0.3/lib/active_support/callbacks.rb:135:in `run_callbacks'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/actionpack-6.0.3/lib/abstract_controller/callbacks.rb:41:in `process_action'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/actionpack-6.0.3/lib/abstract_controller/base.rb:136:in `process'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/actionmailer-6.0.3/lib/action_mailer/rescuable.rb:25:in `block in process'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/actionmailer-6.0.3/lib/action_mailer/rescuable.rb:17:in `handle_exceptions'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/actionmailer-6.0.3/lib/action_mailer/rescuable.rb:24:in `process'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/actionview-6.0.3/lib/action_view/rendering.rb:39:in `process'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/actionmailer-6.0.3/lib/action_mailer/base.rb:637:in `block in process'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/activesupport-6.0.3/lib/active_support/notifications.rb:180:in `block in instrument'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/activesupport-6.0.3/lib/active_support/notifications/instrumenter.rb:24:in `instrument'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/activesupport-6.0.3/lib/active_support/notifications.rb:180:in `instrument'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/actionmailer-6.0.3/lib/action_mailer/base.rb:636:in `process'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/actionmailer-6.0.3/lib/action_mailer/parameterized.rb:143:in `block in processed_mailer'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/actionmailer-6.0.3/lib/action_mailer/parameterized.rb:141:in `tap'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/actionmailer-6.0.3/lib/action_mailer/parameterized.rb:141:in `processed_mailer'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/actionmailer-6.0.3/lib/action_mailer/message_delivery.rb:114:in `deliver_now'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/actionmailer-6.0.3/lib/action_mailer/parameterized.rb:127:in `perform'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/activejob-6.0.3/lib/active_job/execution.rb:40:in `block in perform_now'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/activesupport-6.0.3/lib/active_support/callbacks.rb:112:in `block in run_callbacks'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/i18n-1.8.2/lib/i18n.rb:313:in `with_locale'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/activejob-6.0.3/lib/active_job/translation.rb:9:in `block (2 levels) in <module:Translation>'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/activesupport-6.0.3/lib/active_support/callbacks.rb:121:in `instance_exec'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/activesupport-6.0.3/lib/active_support/callbacks.rb:121:in `block in run_callbacks'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/activesupport-6.0.3/lib/active_support/core_ext/time/zones.rb:66:in `use_zone'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/activejob-6.0.3/lib/active_job/timezones.rb:9:in `block (2 levels) in <module:Timezones>'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/activesupport-6.0.3/lib/active_support/callbacks.rb:121:in `instance_exec'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/activesupport-6.0.3/lib/active_support/callbacks.rb:121:in `block in run_callbacks'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/activejob-6.0.3/lib/active_job/logging.rb:25:in `block (4 levels) in <module:Logging>'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/activesupport-6.0.3/lib/active_support/notifications.rb:180:in `block in instrument'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/activesupport-6.0.3/lib/active_support/notifications/instrumenter.rb:24:in `instrument'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/activesupport-6.0.3/lib/active_support/notifications.rb:180:in `instrument'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/activejob-6.0.3/lib/active_job/logging.rb:24:in `block (3 levels) in <module:Logging>'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/activejob-6.0.3/lib/active_job/logging.rb:45:in `block in tag_logger'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/activesupport-6.0.3/lib/active_support/tagged_logging.rb:80:in `block in tagged'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/activesupport-6.0.3/lib/active_support/tagged_logging.rb:28:in `tagged'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/activesupport-6.0.3/lib/active_support/tagged_logging.rb:80:in `tagged'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/activejob-6.0.3/lib/active_job/logging.rb:45:in `tag_logger'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/activejob-6.0.3/lib/active_job/logging.rb:21:in `block (2 levels) in <module:Logging>'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/activesupport-6.0.3/lib/active_support/callbacks.rb:121:in `instance_exec'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/activesupport-6.0.3/lib/active_support/callbacks.rb:121:in `block in run_callbacks'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/activesupport-6.0.3/lib/active_support/callbacks.rb:139:in `run_callbacks'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/activejob-6.0.3/lib/active_job/execution.rb:39:in `perform_now'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/activejob-6.0.3/lib/active_job/execution.rb:25:in `block in execute'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/activesupport-6.0.3/lib/active_support/callbacks.rb:112:in `block in run_callbacks'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/activejob-6.0.3/lib/active_job/railtie.rb:43:in `block (4 levels) in <class:Railtie>'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/activesupport-6.0.3/lib/active_support/execution_wrapper.rb:88:in `wrap'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/activesupport-6.0.3/lib/active_support/reloader.rb:72:in `block in wrap'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/activesupport-6.0.3/lib/active_support/execution_wrapper.rb:88:in `wrap'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/activesupport-6.0.3/lib/active_support/reloader.rb:71:in `wrap'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/activejob-6.0.3/lib/active_job/railtie.rb:42:in `block (3 levels) in <class:Railtie>'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/activesupport-6.0.3/lib/active_support/callbacks.rb:121:in `instance_exec'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/activesupport-6.0.3/lib/active_support/callbacks.rb:121:in `block in run_callbacks'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/activesupport-6.0.3/lib/active_support/callbacks.rb:139:in `run_callbacks'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/activejob-6.0.3/lib/active_job/execution.rb:23:in `execute'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/activejob-6.0.3/lib/active_job/queue_adapters/async_adapter.rb:70:in `perform'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/concurrent-ruby-1.1.6/lib/concurrent-ruby/concurrent/executor/ruby_thread_pool_executor.rb:353:in `run_task'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/concurrent-ruby-1.1.6/lib/concurrent-ruby/concurrent/executor/ruby_thread_pool_executor.rb:342:in `block (3 levels) in create_worker'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/concurrent-ruby-1.1.6/lib/concurrent-ruby/concurrent/executor/ruby_thread_pool_executor.rb:325:in `loop'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/concurrent-ruby-1.1.6/lib/concurrent-ruby/concurrent/executor/ruby_thread_pool_executor.rb:325:in `block (2 levels) in create_worker'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/concurrent-ruby-1.1.6/lib/concurrent-ruby/concurrent/executor/ruby_thread_pool_executor.rb:324:in `catch'
+/home/divyanshu/.rvm/gems/ruby-2.7.0/gems/concurrent-ruby-1.1.6/lib/concurrent-ruby/concurrent/executor/ruby_thread_pool_executor.rb:324:in `block in create_worker'
+  [1m[36mMerchandise Exists? (0.9ms)[0m  [1m[34mSELECT 1 AS one FROM "merchandises" WHERE "merchandises"."user_id" = $1 LIMIT $2[0m  [["user_id", 1], ["LIMIT", 1]]
+  Rendering users/profileinfo.html.erb within layouts/editinfotemplate
+  Rendered layouts/_flash_messages.html.erb (Duration: 0.1ms | Allocations: 18)
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  Rendered users/profileinfo.html.erb within layouts/editinfotemplate (Duration: 78.8ms | Allocations: 4353)
+  Rendered application/_favicon.html.erb (Duration: 21.9ms | Allocations: 3260)
+  Rendered layouts/_header.html.erb (Duration: 3.3ms | Allocations: 819)
+  Rendered layouts/_footer.html.erb (Duration: 10.8ms | Allocations: 1695)
+Completed 200 OK in 710ms (Views: 269.1ms | ActiveRecord: 8.9ms | Allocations: 83529)
+
+
+Started GET "/favicon.ico" for 127.0.0.1 at 2020-06-01 16:23:47 -0500
+Processing by UsersController#show as 
+  Parameters: {"permalink"=>"favicon"}
+  [1m[36mUser Load (1.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."permalink" = $1 LIMIT $2[0m  [["permalink", "favicon"], ["LIMIT", 1]]
+  [1m[36mUser Load (2.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mMerchandise Exists? (3.5ms)[0m  [1m[34mSELECT 1 AS one FROM "merchandises" WHERE "merchandises"."user_id" = $1 LIMIT $2[0m  [["user_id", 1], ["LIMIT", 1]]
+  [1m[36mEvent Load (2.0ms)[0m  [1m[34mSELECT "events".* FROM "events" WHERE (start_at < '2020-06-01 14:28:47.141358' AND end_at > '2020-06-01 14:28:47.141358' AND usrid = 1) ORDER BY "events"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Completed 406 Not Acceptable in 27ms (ActiveRecord: 9.4ms | Allocations: 1776)
+
+
+  
+ActionController::UnknownFormat (ActionController::UnknownFormat):
+  
+app/controllers/users_controller.rb:42:in `show'
+Started PATCH "/users/1" for 127.0.0.1 at 2020-06-01 16:23:56 -0500
+Processing by UsersController#update as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"53gFp/LzC98yvOHUBQhNMtNtYGZVr6TQgOnKgIAkD6FuAZSiB39STWz6tjcmwQ1Yjs/E+xxNywx04um2yekPjw==", "user"=>{"name"=>"Divyanshu", "about"=>"", "genre1"=>"", "genre2"=>"", "genre3"=>""}, "commit"=>"Save Changes", "id"=>"1"}
+  [1m[36mUser Load (0.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."permalink" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mUser Load (1.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mMerchandise Exists? (2.2ms)[0m  [1m[34mSELECT 1 AS one FROM "merchandises" WHERE "merchandises"."user_id" = $1 LIMIT $2[0m  [["user_id", 1], ["LIMIT", 1]]
+DEPRECATION WARNING: update_attributes is deprecated and will be removed from Rails 6.1 (please, use update instead) (called from update at /mnt/c/RUBYONRAILS/tomatocan/app/controllers/users_controller.rb:176)
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.8ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER($1) AND "users"."id" != $2 LIMIT $3[0m  [["email", "dkalola@hawk.iit.edu"], ["id", 1], ["LIMIT", 1]]
+  [1m[36mUser Exists? (2.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE LOWER("users"."permalink") = LOWER($1) AND "users"."id" != $2 LIMIT $3[0m  [["permalink", "divyanshuk"], ["id", 1], ["LIMIT", 1]]
+  [1m[36mUser Update (0.7ms)[0m  [1m[33mUPDATE "users" SET "about" = $1, "genre1" = $2, "genre2" = $3, "genre3" = $4, "updated_at" = $5 WHERE "users"."id" = $6[0m  [["about", ""], ["genre1", ""], ["genre2", ""], ["genre3", ""], ["updated_at", "2020-06-01 21:23:56.911610"], ["id", 1]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+Redirected to http://127.0.0.1:3000/divyanshuk
+Completed 302 Found in 34ms (ActiveRecord: 11.5ms | Allocations: 3576)
+
+
+Started GET "/divyanshuk" for 127.0.0.1 at 2020-06-01 16:23:56 -0500
+Processing by UsersController#show as HTML
+  Parameters: {"permalink"=>"divyanshuk"}
+  [1m[36mUser Load (0.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."permalink" = $1 LIMIT $2[0m  [["permalink", "divyanshuk"], ["LIMIT", 1]]
+  [1m[36mMerchandise Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM "merchandises" WHERE "merchandises"."user_id" = $1 LIMIT $2[0m  [["user_id", 1], ["LIMIT", 1]]
+  [1m[36mEvent Load (1.4ms)[0m  [1m[34mSELECT "events".* FROM "events" WHERE (start_at < '2020-06-01 14:28:56.953205' AND end_at > '2020-06-01 14:28:56.953205' AND usrid = 1) ORDER BY "events"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  Rendering users/show.html.erb within layouts/userpgtemplate
+  Rendered layouts/_authorform.html.erb (Duration: 27.1ms | Allocations: 1955)
+  [1m[36mUser Load (1.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  Rendered layouts/_streamButton.html.erb (Duration: 15.2ms | Allocations: 770)
+  Rendered layouts/_merchsidebar.html.erb (Duration: 1.8ms | Allocations: 1174)
+  [1m[36mEvent Load (0.9ms)[0m  [1m[34mSELECT "events".* FROM "events" WHERE (start_at > '2020-06-01 11:23:56.956369' AND usrid = 1) ORDER BY start_at ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 4], ["OFFSET", 0]]
+  Rendered users/show.html.erb within layouts/userpgtemplate (Duration: 54.5ms | Allocations: 5774)
+  Rendered application/_favicon.html.erb (Duration: 20.5ms | Allocations: 3260)
+  Rendered layouts/_header.html.erb (Duration: 3.2ms | Allocations: 818)
+  Rendered layouts/_footer.html.erb (Duration: 16.9ms | Allocations: 1694)
+Completed 200 OK in 267ms (Views: 253.8ms | ActiveRecord: 4.5ms | Allocations: 65238)
+
+
+Started GET "/favicon.ico" for 127.0.0.1 at 2020-06-01 16:23:58 -0500
+Processing by UsersController#show as 
+  Parameters: {"permalink"=>"favicon"}
+  [1m[36mUser Load (1.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."permalink" = $1 LIMIT $2[0m  [["permalink", "favicon"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.8ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mMerchandise Exists? (1.4ms)[0m  [1m[34mSELECT 1 AS one FROM "merchandises" WHERE "merchandises"."user_id" = $1 LIMIT $2[0m  [["user_id", 1], ["LIMIT", 1]]
+  [1m[36mEvent Load (1.5ms)[0m  [1m[34mSELECT "events".* FROM "events" WHERE (start_at < '2020-06-01 14:28:58.570762' AND end_at > '2020-06-01 14:28:58.570762' AND usrid = 1) ORDER BY "events"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Completed 406 Not Acceptable in 16ms (ActiveRecord: 4.8ms | Allocations: 1741)
+
+
+  
+ActionController::UnknownFormat (ActionController::UnknownFormat):
+  
+app/controllers/users_controller.rb:42:in `show'
+Started GET "/favicon.ico" for 127.0.0.1 at 2020-06-01 16:24:22 -0500
+Processing by UsersController#show as 
+  Parameters: {"permalink"=>"favicon"}
+  [1m[36mUser Load (1.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."permalink" = $1 LIMIT $2[0m  [["permalink", "favicon"], ["LIMIT", 1]]
+  [1m[36mUser Load (1.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mMerchandise Exists? (0.6ms)[0m  [1m[34mSELECT 1 AS one FROM "merchandises" WHERE "merchandises"."user_id" = $1 LIMIT $2[0m  [["user_id", 1], ["LIMIT", 1]]
+  [1m[36mEvent Load (1.1ms)[0m  [1m[34mSELECT "events".* FROM "events" WHERE (start_at < '2020-06-01 14:29:22.612969' AND end_at > '2020-06-01 14:29:22.612969' AND usrid = 1) ORDER BY "events"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Completed 406 Not Acceptable in 33ms (ActiveRecord: 3.7ms | Allocations: 1770)
+
+
+  
+ActionController::UnknownFormat (ActionController::UnknownFormat):
+  
+app/controllers/users_controller.rb:42:in `show'
+Started GET "/events/new" for 127.0.0.1 at 2020-06-01 16:24:32 -0500
+Processing by EventsController#new as HTML
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering events/new.html.erb within layouts/application
+  Rendered events/_form.html.erb (Duration: 40.9ms | Allocations: 3703)
+  Rendered events/new.html.erb within layouts/application (Duration: 43.7ms | Allocations: 4472)
+  Rendered application/_favicon.html.erb (Duration: 26.3ms | Allocations: 3482)
+  Rendered layouts/_header.html.erb (Duration: 0.7ms | Allocations: 609)
+  Rendered layouts/_footer.html.erb (Duration: 10.6ms | Allocations: 1702)
+Completed 200 OK in 268ms (Views: 231.3ms | ActiveRecord: 0.5ms | Allocations: 76219)
+
+
+Started GET "/favicon.ico" for 127.0.0.1 at 2020-06-01 16:24:38 -0500
+Processing by UsersController#show as 
+  Parameters: {"permalink"=>"favicon"}
+  [1m[36mUser Load (1.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."permalink" = $1 LIMIT $2[0m  [["permalink", "favicon"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mMerchandise Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "merchandises" WHERE "merchandises"."user_id" = $1 LIMIT $2[0m  [["user_id", 1], ["LIMIT", 1]]
+  [1m[36mEvent Load (0.4ms)[0m  [1m[34mSELECT "events".* FROM "events" WHERE (start_at < '2020-06-01 14:29:38.666932' AND end_at > '2020-06-01 14:29:38.666932' AND usrid = 1) ORDER BY "events"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Completed 406 Not Acceptable in 10ms (ActiveRecord: 2.5ms | Allocations: 1755)
+
+
+  
+ActionController::UnknownFormat (ActionController::UnknownFormat):
+  
+app/controllers/users_controller.rb:42:in `show'
+Started GET "/" for 127.0.0.1 at 2020-06-02 14:05:40 -0500
+  [1m[35m (13.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by StaticPagesController#home as HTML
+  [1m[36mEvent Load (2.4ms)[0m  [1m[34mSELECT "events".* FROM "events" WHERE (start_at < '2020-06-02 12:05:41.356375' AND end_at > '2020-06-02 12:05:41.356375') ORDER BY "events"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mEvent Load (1.0ms)[0m  [1m[34mSELECT "events".* FROM "events" WHERE (start_at > '2020-06-02 12:05:41.356375') ORDER BY start_at ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mUser Load (25.8ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mUser Load (2.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering static_pages/home.html.erb within layouts/homepg
+  [1m[35m (0.8ms)[0m  [1m[34mSELECT COUNT(*) FROM "events" WHERE (start_at > '2020-06-02 09:05:41.328286')[0m
+  Rendered layouts/_countdown_clock.html.erb (Duration: 12.8ms | Allocations: 468)
+  [1m[35mCACHE  (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "events" WHERE (start_at > '2020-06-02 09:05:41.328286')[0m
+  [1m[35mCACHE  (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "events" WHERE (start_at > '2020-06-02 09:05:41.328286')[0m
+  Rendered layouts/_maincalendar.html.erb (Duration: 37.5ms | Allocations: 3578)
+  Rendered static_pages/home.html.erb within layouts/homepg (Duration: 1703.1ms | Allocations: 334992)
+  Rendered application/_favicon.html.erb (Duration: 32.1ms | Allocations: 3504)
+  Rendered layouts/_header.html.erb (Duration: 3.5ms | Allocations: 1372)
+  Rendered layouts/_footer.html.erb (Duration: 12.8ms | Allocations: 2066)
+Completed 200 OK in 2635ms (Views: 2350.8ms | ActiveRecord: 62.4ms | Allocations: 434749)
+
+
