@@ -3,20 +3,20 @@ default: &default
   pool: 5
   timeout: 5000
   host: localhost
-  password: 12#Crossfire
+  password: YOUR_PASSWORD
 
 
 development:
   <<: *default
   encoding: unicode
-  database: Development
-  username: postgres
+  database: YOUR_DEVELOPMENT_DATABASE_NAME
+  username: YOUR_USERNAME
 
 test:
   <<: *default
   encoding: unicode
-  database: Test
-  username: postgres
+  database: YOUR_TEST_DATABASE_NAME
+  username: YOUR_USERNAME
 
 production:
   <<: *default
